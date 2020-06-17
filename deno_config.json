@@ -1,0 +1,10 @@
+{
+  "name": "simple_demo",
+  "description": "Simple demo for deno config file that runs a faas script to give toy suggestions if bored.",
+  "version": "1.0.0",
+  "author": "Dane J",
+  "main": "server.ts",
+  "permissions": [
+    "allow-net=www.boredapi.com"
+  ]
+}

@@ -1,9 +1,9 @@
 #! /usr/bin/env python
 
 ## @package denorun
-#  Allows for running deno scripts from a single command via a yaml config.
+#  Allows for running deno scripts from a single command via a yaml/json config.
 
-import yaml,subprocess,sys,shutil,stat,os
+import yaml,subprocess,sys,shutil,stat,os,json
 
 ## @funcrtion addParamPrefix
 #  Simply add "--" before the supplied string and returns.
@@ -26,12 +26,33 @@ def doInstall():
     pass
   pass
 
+## @function loadConfig
+#  Function used to load the config data.
+#  The config file can be in yaml or json format.
+#  The default format used is yaml, thus the script prefer it over json.
+def loadConfig():
+  try:
+    if os.path.exists(r'deno_config.yaml'):
+      with open(r'deno_config.yaml') as configFile:
+        config = yaml.full_load(configFile)
+    elif os.path.exists(r'deno_config.json'):
+      with open(r'deno_config.json') as configFile:
+        config = json.load(configFile)
+    else: 
+      print('Unable to locate deno_config file.')
+      quit(1)
+    return config
+  except OSError:
+    print('Unable to locate / open deno_config file.')
+    quit(1)
+
 # Install if the --install cmdline argument is supplied.
 doInstall()
 
 # Load Config Data
-with open(r'deno_config.yaml') as configFile:
-  config = yaml.full_load(configFile)
+config = loadConfig()
+# with open(r'deno_config.yaml') as configFile:
+#   config = yaml.full_load(configFile)
 
 # Add ticks to permission parameters
 permissions = list(map(addParamPrefix, config['permissions']))
