@@ -19,3 +19,31 @@ The repository includes a demo config and sample deno project that simply output
 $ denorun
 If you're bored, Cook something together with someone.
 ```
+
+## Config File
+* The config file is required and can be in yaml or json format.
+* The config file must be named "deno_config.json" when using json.
+* The config file must be named "deno_config.yaml" when using yaml.
+* Yaml is the prefered format thus if both json and yaml config files exist, the script with use the yaml version and ignore the json file.
+
+At this time the only required fields are:
+* **main** - filename of deno script.
+* **permissions** - array of permisions to add. 
+
+### Examples
+#### Yaml
+```yml
+main:
+  server.ts
+permissions:
+  - allow-net
+```
+#### Json
+```json
+{
+  "main": "server.ts",
+  "permissions": [
+    "allow-net"
+  ]
+}
+```
