@@ -1,0 +1,43 @@
+#! /usr/bin/env python
+
+## @package denorun
+#  Allows for running deno scripts from a single command via a yaml config.
+
+import yaml,subprocess,sys,shutil,stat,os
+
+## @funcrtion addParamPrefix
+#  Simply add "--" before the supplied string and returns.
+def addParamPrefix(param):
+  return '--{}'.format(param)
+
+## @function doInstall
+#  Function used to install the script to the system path.
+#  Currently this only work within a Linux Environment.
+def doInstall():
+  if '--install' in sys.argv:
+    instPath=r'/usr/bin/'
+    filePath=instPath+'denorun'
+    if not os.path.exists(instPath):
+      os.makedirs(instPath)
+    shutil.copyfile(__file__,filePath)
+    os.chmod(filePath, stat.S_IEXEC)  
+    print("Script Installed")
+    quit(0)
+    pass
+  pass
+
+# Install if the --install cmdline argument is supplied.
+doInstall()
+
+# Load Config Data
+with open(r'deno_config.yaml') as configFile:
+  config = yaml.full_load(configFile)
+
+# Add ticks to permission parameters
+permissions = list(map(addParamPrefix, config['permissions']))
+
+# Build run command
+cmd = ["deno", "run", *permissions, config['main']]
+
+# Run deno script
+subprocess.run(cmd)
