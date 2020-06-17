@@ -8,7 +8,7 @@ This is more of a proof of concept than anything in reponce to the Deno issue [#
 
 ## Install
 ```bash
-denorun --install
+./denorun --install
 ```
 
 ## Demo
